@@ -1,0 +1,6 @@
+# Los .bat necesitan finales de línea de Windows (CRLF): con LF, cmd.exe puede fallar al saltar a etiquetas.
+*.bat text eol=crlf
+
+# Archivos binarios: Git no debe tocarlos nunca.
+*.jpg binary
+*.png binary
