@@ -1,4 +1,4 @@
-# Calendario en el fondo
+# Live Google Calendar Wallpaper
 
 A live, clickable Google Calendar on your Windows desktop. Changes you make in Google Calendar appear on the wallpaper within seconds; click any event to highlight it and read its description, location and links.
 
