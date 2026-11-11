@@ -11,7 +11,7 @@ Tu Google Calendar en el fondo de pantalla de Windows, en directo y con clics. L
 3. **Google Auth Platform › Comenzar**: nombre de la app «Calendario fondo», tu correo y audiencia **Externa** (con una cuenta de Gmail es la única opción).
 4. Elige cómo dejar la app:
    - **Opción A, en pruebas (recomendada para empezar).** En **Audiencia › Usuarios de prueba**, añade tu correo de Gmail; sin esto, Google te bloquea al dar permiso. El permiso caduca cada 7 días y se renueva con un clic (paso 4 de esta guía).
-   - **Opción B, publicada.** Sin caducidad semanal, pero Google pide una página de inicio y una política de privacidad. Haz un *fork* de este repositorio, activa GitHub Pages (*Settings › Pages*, rama `main`, carpeta `/docs`) y pon en **Marca**: dominio autorizado `TU-USUARIO.github.io`, página de inicio `https://TU-USUARIO.github.io/live-google-calendar-wallpaper/` y política `…/privacidad.html`. Después, en **Audiencia**, pulsa **Publicar aplicación**.
+   - **Opción B, publicada.** Sin caducidad semanal, pero Google pide una página de inicio y una política de privacidad. Haz un *fork* de este repositorio, activa GitHub Pages (*Settings › Pages*, rama `main`, carpeta `/docs`) y pon en **Marca**: dominio autorizado `TU-USUARIO.github.io`, página de inicio `https://TU-USUARIO.github.io/live-gcal-wallpaper/` y política `…/privacidad.html`. Después, en **Audiencia**, pulsa **Publicar aplicación**.
 5. **Clientes › Crear cliente**, tipo **Aplicación de escritorio**. Deja abierta la ventana con el **ID de cliente** y el **secreto de cliente**: el instalador te los pedirá. Google solo enseña el secreto completo al crearlo.
 
 ## 2. Instala
