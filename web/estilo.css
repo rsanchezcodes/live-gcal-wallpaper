@@ -1,0 +1,162 @@
+/* Todo se mide en rem, y 1rem = 1/60 de la altura de la pantalla: el diseño escala con cualquier monitor. */
+:root {
+  --tinta: #f3f6f4;
+  --suave: #b9c7c6;
+  --linea: rgba(243, 246, 244, .13);
+  --borde: rgba(243, 246, 244, .32);
+  --hoy: rgba(243, 246, 244, .08);
+  --ahora: #ffc857;
+  --oscuro: #10222a;
+  font-size: calc(100vh / 60);
+}
+
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: #20343d center / cover no-repeat;
+  color: var(--tinta);
+  font-family: Bahnschrift, "Segoe UI", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.25;
+  user-select: none;
+}
+
+/* Oscurece el fondo por la derecha para que el calendario se lea; la izquierda queda libre para los iconos. */
+#velo {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(16, 34, 42, 0) 3%, rgba(16, 34, 42, .72) 17%, rgba(16, 34, 42, .86) 100%);
+}
+
+main {
+  position: fixed;
+  left: 15%;
+  right: 2.2rem;
+  top: 2.2rem;
+  bottom: 4.6rem; /* espacio para la barra de tareas */
+  display: grid;
+  grid-template-columns: 19rem minmax(0, 1fr);
+  gap: 2.6rem;
+}
+
+/* --- Columna izquierda: fecha, ahora, después, más adelante ------------------------------- */
+
+aside { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+#dia { font-size: 2.3rem; font-weight: 300; }
+#num { font-size: 12.5rem; font-weight: 700; line-height: .86; letter-spacing: -.04em; margin: .2rem 0 .5rem -.5rem; }
+#mes { font-size: 2.3rem; font-weight: 300; color: var(--suave); }
+
+h2 { font-size: 1rem; font-weight: 400; color: var(--ahora); margin: 1.9rem 0 .3rem; }
+.pri { font-size: 1.45rem; font-weight: 600; overflow-wrap: anywhere; }
+.sec { color: var(--suave); font-size: 1rem; margin-top: .1rem; overflow-wrap: anywhere; }
+
+.item { cursor: pointer; border-radius: .25rem; margin-left: -.4rem; padding: .1rem .4rem; }
+.item:hover { background: rgba(243, 246, 244, .07); }
+
+#mas { list-style: none; padding: 0; }
+#mas li { display: grid; grid-template-columns: 6.6rem 1fr; gap: .5rem; padding: .26rem .4rem; font-size: .95rem; }
+#mas span:first-child { color: var(--suave); }
+#mas span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+#aviso { margin-top: auto; padding-top: 1rem; color: var(--ahora); font-size: .95rem; }
+#aviso button { display: block; margin-top: .5rem; color: var(--oscuro); background: var(--ahora); border-color: var(--ahora); font-weight: 600; }
+#aviso button:hover { background: #ffd47a; }
+
+/* --- Detalle del evento elegido ----------------------------------------------------------- */
+
+#detalle {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 1.9rem;
+  padding-left: 1rem;
+  border-left: .35rem solid var(--color, var(--ahora));
+}
+#detalle[hidden] { display: none; }
+#d-titulo { font-size: 1.7rem; font-weight: 600; line-height: 1.15; overflow-wrap: anywhere; }
+#d-cuando { margin-top: .5rem; font-size: 1.05rem; }
+#d-desc {
+  margin-top: 1rem;
+  padding-right: .4rem;
+  min-height: 0;
+  overflow-y: auto;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+  user-select: text;
+}
+#d-desc:empty { display: none; }
+#d-acciones { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.1rem; }
+body.con-sel #foco, body.con-sel #fut { display: none; }
+
+button {
+  font: inherit;
+  font-size: .95rem;
+  color: var(--tinta);
+  background: rgba(243, 246, 244, .06);
+  border: 1px solid var(--borde);
+  border-radius: .25rem;
+  padding: .35rem .7rem;
+  cursor: pointer;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+button:hover { background: rgba(243, 246, 244, .14); }
+button.cerrar { color: var(--suave); border-color: transparent; background: none; }
+button:focus-visible, .item:focus-visible, .ev:focus-visible { outline: .14rem solid var(--ahora); outline-offset: .12rem; }
+
+/* --- Semana ------------------------------------------------------------------------------- */
+
+#sem {
+  display: grid;
+  grid-template-columns: 3.2rem repeat(7, minmax(0, 1fr));
+  grid-template-rows: auto auto minmax(0, 1fr);
+  min-height: 0;
+}
+.cab { padding: 0 .5rem .5rem; font-size: 1.1rem; color: var(--suave); }
+.cab b { font-size: 1.9rem; font-weight: 600; color: var(--tinta); margin-left: .25rem; }
+.cab.hoy, .cab.hoy b { color: var(--ahora); }
+
+.todo { padding: 0 .15rem .4rem; display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+.todo div { font-size: .82rem; padding: .12rem .35rem; border-radius: .18rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+
+.horas { position: relative; }
+.horas span { position: absolute; right: .5rem; transform: translateY(-50%); font-size: .82rem; color: var(--suave); }
+
+.col { position: relative; border-left: 1px solid var(--linea); min-width: 0; }
+.col.hoy { background: var(--hoy); }
+.raya { position: absolute; left: 0; right: 0; border-top: 1px solid var(--linea); }
+
+.ev {
+  position: absolute;
+  border-radius: .18rem;
+  padding: .14rem .32rem;
+  overflow: hidden;
+  font-size: .86rem;
+  line-height: 1.14;
+  box-shadow: 0 0 0 1px rgba(16, 34, 42, .55);
+  cursor: pointer;
+  transition: opacity .18s, box-shadow .18s;
+}
+.ev b { font-weight: 600; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.ev.largo b { -webkit-line-clamp: 3; }
+.ev span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ev:hover { filter: brightness(1.1); }
+.ev.pasado { opacity: .55; }
+
+/* Al elegir un evento, el resto se atenúa y el elegido se ilumina. */
+body.con-sel .ev, body.con-sel .todo div { opacity: .28; }
+body.con-sel .ev.sel, body.con-sel .todo div.sel {
+  opacity: 1;
+  z-index: 6;
+  box-shadow: 0 0 0 .16rem var(--tinta), 0 .5rem 1.6rem rgba(0, 0, 0, .5);
+}
+
+#linea { position: absolute; left: -1px; right: 0; border-top: .14rem solid var(--ahora); z-index: 7; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ev { transition: none; }
+}

@@ -1,0 +1,12 @@
+# Secretos y datos personales: nunca se suben
+credentials.json
+client_secret*.json
+datos/
+config.json
+
+# Entorno y registros locales
+.venv/
+__pycache__/
+*.pyc
+app.log*
+.pytest_cache/

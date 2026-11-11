@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Calendario</title>
+  <style>
+    html, body { margin: 0; height: 100%; }
+    body { background: #20343d; color: #b9c7c6; font: 18px Bahnschrift, "Segoe UI", sans-serif; display: grid; place-items: center; }
+  </style>
+</head>
+<body>
+  <p>Esperando a la aplicación del calendario…</p>
+  <script>
+    // Este archivo es el que se pone como fondo en Wallpaper Engine o Lively. No contiene datos:
+    // espera a que la app local responda (puede arrancar más tarde que el programa de fondos)
+    // y entonces abre la página que genera. Si cambias el puerto en config.json, cámbialo aquí.
+    const APP = "http://127.0.0.1:8765/";
+    async function probar() {
+      try {
+        await fetch(APP + "api/ping", { mode: "no-cors", cache: "no-store" });
+        location.replace(APP);
+      } catch {
+        setTimeout(probar, 2000);
+      }
+    }
+    probar();
+  </script>
+</body>
+</html>

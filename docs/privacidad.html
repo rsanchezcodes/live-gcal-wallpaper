@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacidad · Calendario en el fondo</title><link rel="stylesheet" href="estilo.css"></head>
+<body><main>
+<p><a href="./">← Calendario en el fondo</a></p>
+<h1>Política de privacidad</h1>
+<p>Última actualización: 11 de noviembre de 2026.</p>
+
+<h2>Qué datos usa la aplicación</h2>
+<p>Con tu permiso, la aplicación lee de tu cuenta de Google la <strong>lista de tus calendarios</strong> y los <strong>eventos</strong> de la semana actual y de los 60 días siguientes: título, fecha y hora, lugar, descripción, color, enlace al evento y tu respuesta a la invitación. Usa el permiso <code>calendar.readonly</code>, de solo lectura: no puede crear, modificar ni borrar nada.</p>
+
+<h2>Para qué los usa</h2>
+<p>Únicamente para mostrarte tu calendario en el fondo de pantalla de tu propio ordenador. No se usan para publicidad, perfiles, entrenamiento de modelos de inteligencia artificial ni ningún otro fin.</p>
+
+<h2>Dónde se guardan y quién los ve</h2>
+<ul>
+<li>Todo ocurre <strong>en tu ordenador</strong>. La aplicación se comunica solo con los servidores de Google. No existe ningún servidor del autor y <strong>ningún dato se envía al autor ni a terceros</strong>.</li>
+<li>En la carpeta <code>datos</code> de la aplicación se guardan tu permiso de acceso (<code>token.json</code>) y una copia de los eventos que se muestran (<code>eventos.json</code>), para que el calendario se vea aunque no haya conexión.</li>
+<li>La página del calendario solo está disponible dentro de tu propio equipo (dirección 127.0.0.1).</li>
+<li>No hay cookies de seguimiento, estadísticas ni registros de uso enviados a ningún sitio.</li>
+</ul>
+
+<h2>Cuánto tiempo se conservan</h2>
+<p>Mientras tengas la aplicación instalada. <code>desinstalar.bat</code> borra el permiso de acceso; borrar la carpeta de la aplicación elimina también la copia de los eventos.</p>
+
+<h2>Cómo retirar el acceso</h2>
+<p>Puedes revocarlo en cualquier momento desde <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>. A partir de ese momento la aplicación deja de poder leer tu calendario.</p>
+
+<h2>Cumplimiento con Google</h2>
+<p>El uso y la transferencia de la información recibida de las API de Google se ajustan a la <a href="https://developers.google.com/terms/api-services-user-data-policy">Política de datos de usuario de los servicios de API de Google</a>, incluidos los requisitos de uso limitado (Limited Use).</p>
+
+<h2>Contacto</h2>
+<p>Para dudas sobre privacidad, abre una incidencia (issue) en el <a class="repo" href="https://github.com/">repositorio de GitHub</a>.</p>
+
+<hr>
+<div lang="en" id="en">
+<h1>Privacy policy</h1>
+<p>Last updated: November 11, 2026.</p>
+<p><strong>Data accessed:</strong> with your permission, the app reads your calendar list and the events of the current week and the next 60 days (title, time, location, description, colour, event link and your RSVP) using the read-only <code>calendar.readonly</code> scope. It cannot create, change or delete anything.</p>
+<p><strong>Use:</strong> only to display your own calendar on your own desktop. No advertising, profiling, AI training or any other purpose.</p>
+<p><strong>Storage and sharing:</strong> everything stays on your computer. The app talks only to Google's servers; there is no server run by the author and no data is ever sent to the author or to third parties. Your access token and a cache of the displayed events are stored in the app's <code>datos</code> folder. The calendar page is only reachable from your own machine (127.0.0.1). No tracking cookies or analytics.</p>
+<p><strong>Retention and deletion:</strong> data is kept while the app is installed. <code>desinstalar.bat</code> deletes the token; deleting the app folder removes the event cache. You can revoke access at any time at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</p>
+<p><strong>Google API Services:</strong> the app's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+<p><strong>Contact:</strong> open an issue in the <a class="repo" href="https://github.com/">GitHub repository</a>.</p>
+</div>
+</main>
+<script>
+const usuario=location.hostname.endsWith(".github.io")?location.hostname.split(".")[0]:"";
+const repo=location.pathname.split("/").filter(Boolean)[0]||"";
+if(usuario&&repo)document.querySelectorAll("a.repo").forEach(a=>a.href=`https://github.com/${usuario}/${repo}`);
+</script>
+</body></html>

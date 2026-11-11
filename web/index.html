@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Calendario</title>
+  <link rel="stylesheet" href="/estilo.css">
+</head>
+<body>
+  <div id="velo"></div>
+  <main>
+    <aside>
+      <div id="dia"></div>
+      <div id="num"></div>
+      <div id="mes"></div>
+
+      <div id="foco"></div>
+      <div id="fut"></div>
+
+      <!-- Detalle del evento elegido: ocupa el sitio de «Ahora» y «Después» -->
+      <section id="detalle" hidden aria-live="polite">
+        <div id="d-titulo"></div>
+        <div id="d-cuando" class="sec"></div>
+        <div id="d-lugar" class="sec"></div>
+        <div id="d-cal" class="sec"></div>
+        <div id="d-desc"></div>
+        <div id="d-acciones"></div>
+      </section>
+
+      <div id="aviso"></div>
+    </aside>
+    <section id="sem"></section>
+  </main>
+  <script src="/calendario.js"></script>
+</body>
+</html>

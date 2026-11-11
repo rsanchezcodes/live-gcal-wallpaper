@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calendario en el fondo</title><link rel="stylesheet" href="estilo.css"></head>
+<body><main>
+<h1>Calendario en el fondo</h1>
+<p>Tu Google Calendar, en directo y con clics, en el fondo de pantalla de Windows. Los cambios que haces en Google Calendar aparecen en el escritorio en segundos, y al pinchar un evento ves su descripción, lugar y enlaces.</p>
+<nav><a class="repo" href="https://github.com/">Código y descarga en GitHub</a><a href="privacidad.html">Política de privacidad</a></nav>
+<img src="vista.jpg" alt="Vista semanal del calendario sobre el fondo de escritorio">
+<img src="detalle.jpg" alt="Al pinchar un evento se resalta y se muestra su detalle">
+<h2>Qué hace</h2>
+<ul>
+<li>Lee tus calendarios de Google con permiso de <strong>solo lectura</strong>: no puede crear, cambiar ni borrar nada.</li>
+<li>Funciona entero en tu ordenador: un pequeño programa local habla con Google y dibuja la página que tu programa de fondos (Wallpaper Engine o Lively) muestra en el escritorio.</li>
+<li>No hay servidores del autor, cuentas ni estadísticas de uso.</li>
+</ul>
+<h2>Cómo instalarlo</h2>
+<p>Las instrucciones paso a paso están en el repositorio de GitHub (archivo LEEME.md).</p>
+<hr lang="en">
+<div lang="en">
+<h1>Calendar wallpaper</h1>
+<p>A live, clickable Google Calendar on your Windows desktop. It runs entirely on your computer, uses read-only access and has no backend, accounts or analytics. See the <a href="privacidad.html#en">privacy policy</a> and the <a class="repo" href="https://github.com/">source code on GitHub</a>.</p>
+</div>
+<footer>Proyecto personal de código abierto (licencia MIT).</footer>
+</main>
+<script>
+// En GitHub Pages (usuario.github.io/repositorio/) enlaza al repositorio sin escribir el nombre a mano.
+const usuario=location.hostname.endsWith(".github.io")?location.hostname.split(".")[0]:"";
+const repo=location.pathname.split("/").filter(Boolean)[0]||"";
+if(usuario&&repo)document.querySelectorAll("a.repo").forEach(a=>a.href=`https://github.com/${usuario}/${repo}`);
+</script>
+</body></html>
