@@ -1,4 +1,4 @@
-# Calendario en el fondo
+# Live Calendar Wallpaper
 
 Tu Google Calendar en el fondo de pantalla de Windows, en directo y con clics. La app lee tu calendario con permiso de **solo lectura** (no puede cambiar nada), comprueba si hay cambios cada 15 segundos y los muestra al momento. Pincha en un evento para resaltarlo y ver su descripción.
 

@@ -1,4 +1,4 @@
-"""Calendario en el fondo: Google Calendar en directo en el fondo de pantalla de Windows.
+"""Live Calendar Wallpaper: Google Calendar en directo en el fondo de pantalla de Windows.
 
     python app.py              arranca la app (lo hace solo al iniciar Windows)
     python app.py --demo       la prueba con datos inventados, sin cuenta de Google

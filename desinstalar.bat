@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-title Calendario en el fondo - desinstalar
+title Live Calendar Wallpaper - desinstalar
 
 set PID=
 if exist datos\app.pid set /p PID=<datos\app.pid

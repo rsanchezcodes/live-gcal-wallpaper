@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-title Calendario en el fondo - instalación
+title Live Calendar Wallpaper - instalación
 
 set PY=
 py -3 -c "import sys" >nul 2>&1 && set PY=py -3
