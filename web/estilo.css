@@ -122,6 +122,7 @@ button:focus-visible, .item:focus-visible, .ev:focus-visible { outline: .14rem s
 }
 #rango { font-size: 1.6rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #rango small { margin-left: .6rem; font-size: 1rem; font-weight: 400; color: var(--ahora); }
+#rango small.otra { color: var(--suave); }
 
 /* Los tres botones forman un solo control con separadores finos. */
 .grupo { display: flex; border: 1px solid var(--borde); border-radius: .4rem; overflow: hidden; flex-shrink: 0; }
@@ -130,6 +131,7 @@ button:focus-visible, .item:focus-visible, .ev:focus-visible { outline: .14rem s
 .grupo button:hover:not(:disabled) { background: rgba(243, 246, 244, .16); }
 .grupo button:disabled { color: var(--suave); opacity: .45; cursor: default; }
 #anterior, #siguiente { font-size: 1.4rem; line-height: 1; padding-inline: .8rem; }
+.estatico .grupo { display: none; } /* en el modo imagen no se puede pulsar nada */
 
 #sem {
   flex: 1;

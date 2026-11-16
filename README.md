@@ -15,6 +15,7 @@ A live, clickable Google Calendar on your Windows desktop. Changes you make in G
 - **Near real-time sync** with the Google Calendar API: a tiny change check every 15 s using `syncToken`; events are downloaded again only when something actually changed.
 - **Instant redraw**: the local server pushes updates to the page with Server-Sent Events, without reloading it.
 - **Interactive**: click an event to highlight it, dim the rest and see its date, location, description and links. *Abrir en Google Calendar* opens it in your browser.
+- **Week navigation**: `‹ Hoy ›` buttons (or the ←/→ keys) browse from 4 weeks back to 12 weeks ahead; after 2 minutes without use the wallpaper returns to the current week.
 - **Your colours**: events keep the colours you chose in Google Calendar; text colour is picked for contrast.
 - **Coming up**: one-off events of the next weeks (exams, deadlines) are listed, recurring classes are not.
 - **Offline-friendly**: the last data is cached and shown with a notice until the connection is back.

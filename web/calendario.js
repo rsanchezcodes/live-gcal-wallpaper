@@ -2,13 +2,18 @@
 "use strict";
 
 const ESTATICO = new URLSearchParams(location.search).has("estatico"); // modo imagen: sin interacción
+if (ESTATICO) document.documentElement.classList.add("estatico");
 const CIERRE_AUTOMATICO_MS = 120000; // el detalle se cierra solo a los 2 minutos
+const VUELTA_AUTOMATICA_MS = 120000; // y desde otra semana se vuelve sola a la actual
 const COLOR_VALIDO = /^#[0-9a-f]{6}$/i;
 
 let vista = null;        // último JSON de /api/vista
 let arranque = null;     // identificador del arranque de la app que sirvió la página
 let elegido = null;      // id del evento seleccionado
 let temporizador = null;
+let semanaVista = 0;     // semana que se ve: 0 = la actual, 1 = la siguiente, -1 = la anterior...
+let limites = [0, 0];    // hasta dónde se puede navegar (lo dice el servidor)
+let temporizadorSemana = null;
 
 const $ = (id) => document.getElementById(id);
 
@@ -191,6 +196,41 @@ function pintarSemana(v) {
   }
 }
 
+// --- Navegación entre semanas --------------------------------------------------------------------
+
+function etiquetaSemana(n) {
+  if (n === 0) return "Esta semana";
+  if (n === 1) return "Próxima semana";
+  if (n === -1) return "Semana pasada";
+  return n > 0 ? `Dentro de ${n} semanas` : `Hace ${-n} semanas`;
+}
+
+function pintarCabecera(v) {
+  limites = v.limites;
+  const rango = $("rango");
+  rango.textContent = v.titulo_semana;
+  rango.append(el("small", v.semana === 0 ? null : "otra", etiquetaSemana(v.semana)));
+  $("anterior").disabled = v.semana <= limites[0];
+  $("siguiente").disabled = v.semana >= limites[1];
+  $("boton-hoy").disabled = v.semana === 0;
+}
+
+function irASemana(n) {
+  const destino = Math.max(limites[0], Math.min(limites[1], n));
+  if (destino !== semanaVista) {
+    semanaVista = destino;
+    cerrarDetalle(); // el evento elegido puede no estar en la otra semana
+    repintar();
+  }
+  programarVuelta();
+}
+
+// Un fondo de pantalla no debe quedarse días enseñando otra semana: tras 2 minutos sin tocarlo, vuelve.
+function programarVuelta() {
+  clearTimeout(temporizadorSemana);
+  if (semanaVista !== 0) temporizadorSemana = setTimeout(() => irASemana(0), VUELTA_AUTOMATICA_MS);
+}
+
 // --- Detalle del evento elegido ------------------------------------------------------------------
 
 async function abrirEnlace(boton, n) {
@@ -247,6 +287,7 @@ function elegir(id) {
   elegido = id;
   mostrarDetalle();
   programarCierre();
+  programarVuelta(); // mientras lo usas, no se va de la semana
 }
 
 function cerrarDetalle() {
@@ -274,6 +315,8 @@ document.addEventListener("click", (ev) => {
 
 document.addEventListener("keydown", (ev) => {
   if (ev.key === "Escape") cerrarDetalle();
+  else if (ev.key === "ArrowLeft") irASemana(semanaVista - 1);
+  else if (ev.key === "ArrowRight") irASemana(semanaVista + 1);
   else if ((ev.key === "Enter" || ev.key === " ") && ev.target.dataset?.id) {
     ev.preventDefault();
     elegir(ev.target.dataset.id);
@@ -283,7 +326,9 @@ document.addEventListener("keydown", (ev) => {
 // --- Datos y actualización -----------------------------------------------------------------------
 
 async function pintar() {
-  const v = await (await fetch("/api/vista", { cache: "no-store" })).json();
+  const pedida = semanaVista;
+  const v = await (await fetch(`/api/vista?semana=${pedida}`, { cache: "no-store" })).json();
+  if (pedida !== semanaVista) return; // mientras llegaba la respuesta se cambió de semana: llegará otra
   if (arranque && v.arranque !== arranque) {
     location.reload(); // la app se ha reiniciado: recarga fondo, estilos y código
     return;
@@ -294,6 +339,7 @@ async function pintar() {
   $("num").textContent = v.hoy.numero;
   $("mes").textContent = v.hoy.mes;
   pintarAviso(v);
+  pintarCabecera(v);
   pintarFoco(v);
   pintarSemana(v);
   if (elegido) mostrarDetalle();
@@ -331,6 +377,9 @@ function cargarFondo() {
   await document.fonts.ready;
   document.body.dataset.listo = "1"; // señal para la captura del modo imagen
   if (ESTATICO) return;
+  $("anterior").onclick = () => irASemana(semanaVista - 1);
+  $("siguiente").onclick = () => irASemana(semanaVista + 1);
+  $("boton-hoy").onclick = () => irASemana(0);
   escucharCambios();
   setInterval(repintar, 30000); // mueve la línea de «ahora»
   document.addEventListener("visibilitychange", () => !document.hidden && repintar());
