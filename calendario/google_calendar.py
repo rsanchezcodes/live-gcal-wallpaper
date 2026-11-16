@@ -180,8 +180,8 @@ class Sincronizador:
     """Pregunta a Google si ha cambiado algo (petición mínima con syncToken) y solo entonces
     descarga los eventos de la semana actual y los próximos días."""
 
-    def __init__(self, servicio, tz, dias=60):
-        self.s, self.tz, self.dias = servicio, tz, dias
+    def __init__(self, servicio, tz):
+        self.s, self.tz = servicio, tz
         self.tokens, self.calendarios = {}, []
         self.t_lista = self.t_ventana = 0.0
         self.dia = None

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from calendario import demo, sincronizacion, vista
 
@@ -51,3 +51,22 @@ def test_la_demo_se_pinta_entera():
     assert sum(len(d["eventos"]) for d in v["dias"]) == 17
     assert v["dias"][4]["todo_dia"][0]["titulo"] == "Fiesta local"
     assert len(v["proximos"]) == 3
+
+
+def test_titulo_de_la_semana():
+    assert vista.titulo_semana(date(2026, 11, 16)) == "16 – 22 de noviembre"
+    assert vista.titulo_semana(date(2026, 11, 30)) == "30 nov – 6 dic"
+    assert vista.titulo_semana(date(2026, 12, 28)) == "28 dic 2026 – 3 ene 2027"
+
+
+def test_otras_semanas():
+    eventos = demo.eventos(AHORA)
+    sincronizacion.ESTADO.publicar(eventos, "")
+    siguiente = vista.construir(CFG, AHORA, semana=1)
+    anterior = vista.construir(CFG, AHORA, semana=-1)
+    assert [d["numero"] for d in siguiente["dias"]] == [16, 17, 18, 19, 20, 21, 22]
+    assert [d["numero"] for d in anterior["dias"]] == [2, 3, 4, 5, 6, 7, 8]
+    assert not any(d["hoy"] for d in siguiente["dias"])          # «hoy» solo en la semana actual
+    titulos = [e["titulo"] for d in siguiente["dias"] for e in d["eventos"]]
+    assert titulos == ["Parcial de Álgebra Lineal"]                # el único evento de esa semana en la demo
+    assert siguiente["proximos"] == vista.construir(CFG, AHORA)["proximos"]  # «Más adelante» no cambia

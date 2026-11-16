@@ -54,6 +54,19 @@ def test_la_vista_identifica_el_arranque(app):
         assert json.load(r)["arranque"].isdigit()
 
 
+def vista_de(consulta=""):
+    with urllib.request.urlopen(f"http://127.0.0.1:{PUERTO}/api/vista{consulta}", timeout=3) as r:
+        return json.load(r)
+
+
+def test_la_vista_de_otra_semana(app):
+    actual, siguiente = vista_de(), vista_de("?semana=1")
+    assert (actual["semana"], siguiente["semana"]) == (0, 1)
+    assert siguiente["titulo_semana"] != actual["titulo_semana"]
+    assert vista_de("?semana=99")["semana"] == siguiente["limites"][1]   # se recorta al límite
+    assert vista_de("?semana=hola")["semana"] == 0
+
+
 def test_rechaza_otros_hosts(app):
     assert peticion("/api/vista", cabeceras={"Host": "malicioso.example.com"}) == 403
 

@@ -23,6 +23,17 @@ def fecha_larga(d):
     return f"{DIAS[d.weekday()]} {d.day} de {MESES[d.month - 1]}"
 
 
+def titulo_semana(lunes):
+    """«16 – 22 de noviembre», «30 nov – 6 dic» o, si cambia el año, «28 dic 2026 – 3 ene 2027»."""
+    domingo = lunes + timedelta(days=6)
+    mes_lunes, mes_domingo = MESES[lunes.month - 1], MESES[domingo.month - 1]
+    if lunes.month == domingo.month:
+        return f"{lunes.day} – {domingo.day} de {mes_lunes}"
+    if lunes.year == domingo.year:
+        return f"{lunes.day} {mes_lunes[:3]} – {domingo.day} {mes_domingo[:3]}"
+    return f"{lunes.day} {mes_lunes[:3]} {lunes.year} – {domingo.day} {mes_domingo[:3]} {domingo.year}"
+
+
 def medianoche(d):
     return datetime.combine(d, datetime.min.time())
 
@@ -110,6 +121,7 @@ def construir(cfg, ahora=None, estado=None, semana=0):
     return {
         "version": version,
         "hoy": {"dia": DIAS[hoy.weekday()], "numero": hoy.day, "mes": MESES[hoy.month - 1]},
+        "titulo_semana": titulo_semana(lunes),
         "ahora_min": ahora.hour * 60 + ahora.minute,
         "rango": rango, "dias": dias,
         "en_curso": en_curso, "siguiente": siguiente, "proximos": proximos,
