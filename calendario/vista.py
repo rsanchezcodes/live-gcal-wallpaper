@@ -72,12 +72,13 @@ def _dia(dia, eventos, ahora, rango):
     return todo, horas
 
 
-def construir(cfg, ahora=None, estado=None):
+def construir(cfg, ahora=None, estado=None, semana=0):
     estado = estado or sincronizacion.ESTADO
     ahora = ahora or datetime.now(ZoneInfo(cfg["zona_horaria"])).replace(tzinfo=None)
     eventos, aviso, version = estado.foto()
     hoy = ahora.date()
-    lunes = hoy - timedelta(days=hoy.weekday())
+    lunes_actual = hoy - timedelta(days=hoy.weekday())
+    lunes = lunes_actual + timedelta(weeks=semana)
     rango = [cfg["hora_inicio"] * 60, cfg["hora_fin"] * 60]
     visibles = set()
 
@@ -100,7 +101,7 @@ def construir(cfg, ahora=None, estado=None):
     siguiente = next((resumen(e) for e in con_hora if e["ini"] > ahora), None)
 
     # «Más adelante»: lo que no se repite (exámenes, entregas, citas); las clases semanales lo taparían.
-    fin_semana = medianoche(lunes + timedelta(days=7))
+    fin_semana = medianoche(lunes_actual + timedelta(days=7))
     futuros = sorted((e for e in eventos if e["ini"] >= fin_semana and e["proximos"] and not e["recurrente"]),
                      key=lambda e: e["ini"])[:MAX_PROXIMOS]
     proximos = [{"id": e["id"], "titulo": e["titulo"], "cuando": fecha_corta(e["ini"])} for e in futuros]
