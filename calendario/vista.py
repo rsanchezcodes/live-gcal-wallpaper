@@ -23,6 +23,17 @@ def fecha_larga(d):
     return f"{DIAS[d.weekday()]} {d.day} de {MESES[d.month - 1]}"
 
 
+def titulo_semana(lunes):
+    """«16 – 22 de noviembre», «30 nov – 6 dic» o, si cambia el año, «28 dic 2026 – 3 ene 2027»."""
+    domingo = lunes + timedelta(days=6)
+    mes_lunes, mes_domingo = MESES[lunes.month - 1], MESES[domingo.month - 1]
+    if lunes.month == domingo.month:
+        return f"{lunes.day} – {domingo.day} de {mes_lunes}"
+    if lunes.year == domingo.year:
+        return f"{lunes.day} {mes_lunes[:3]} – {domingo.day} {mes_domingo[:3]}"
+    return f"{lunes.day} {mes_lunes[:3]} {lunes.year} – {domingo.day} {mes_domingo[:3]} {domingo.year}"
+
+
 def medianoche(d):
     return datetime.combine(d, datetime.min.time())
 
@@ -72,12 +83,13 @@ def _dia(dia, eventos, ahora, rango):
     return todo, horas
 
 
-def construir(cfg, ahora=None, estado=None):
+def construir(cfg, ahora=None, estado=None, semana=0):
     estado = estado or sincronizacion.ESTADO
     ahora = ahora or datetime.now(ZoneInfo(cfg["zona_horaria"])).replace(tzinfo=None)
     eventos, aviso, version = estado.foto()
     hoy = ahora.date()
-    lunes = hoy - timedelta(days=hoy.weekday())
+    lunes_actual = hoy - timedelta(days=hoy.weekday())
+    lunes = lunes_actual + timedelta(weeks=semana)
     rango = [cfg["hora_inicio"] * 60, cfg["hora_fin"] * 60]
     visibles = set()
 
@@ -100,7 +112,7 @@ def construir(cfg, ahora=None, estado=None):
     siguiente = next((resumen(e) for e in con_hora if e["ini"] > ahora), None)
 
     # «Más adelante»: lo que no se repite (exámenes, entregas, citas); las clases semanales lo taparían.
-    fin_semana = medianoche(lunes + timedelta(days=7))
+    fin_semana = medianoche(lunes_actual + timedelta(days=7))
     futuros = sorted((e for e in eventos if e["ini"] >= fin_semana and e["proximos"] and not e["recurrente"]),
                      key=lambda e: e["ini"])[:MAX_PROXIMOS]
     proximos = [{"id": e["id"], "titulo": e["titulo"], "cuando": fecha_corta(e["ini"])} for e in futuros]
@@ -109,6 +121,7 @@ def construir(cfg, ahora=None, estado=None):
     return {
         "version": version,
         "hoy": {"dia": DIAS[hoy.weekday()], "numero": hoy.day, "mes": MESES[hoy.month - 1]},
+        "titulo_semana": titulo_semana(lunes),
         "ahora_min": ahora.hour * 60 + ahora.minute,
         "rango": rango, "dias": dias,
         "en_curso": en_curso, "siguiente": siguiente, "proximos": proximos,

@@ -34,6 +34,7 @@ Ese archivo no contiene datos: espera a que la app esté en marcha y entonces mu
 ## 4. Día a día
 
 - **Cambios:** lo que hagas en Google Calendar aparece en el fondo en unos segundos.
+- **Otras semanas:** con los botones `‹ Hoy ›` de arriba a la derecha (o las flechas ← → del teclado) puedes ir hasta 4 semanas atrás y 12 adelante. A los 2 minutos sin tocarlo, vuelve solo a la semana actual.
 - **Permiso caducado** (opción A, cada 7 días): abajo a la izquierda aparece un aviso con el botón **Volver a conectar**. Púlsalo y acepta en el navegador. Mientras tanto se siguen viendo los últimos datos. `reconectar.bat` hace lo mismo.
 - **Sin conexión:** se muestra la última copia con un aviso, y se pone al día sola al volver la conexión.
 

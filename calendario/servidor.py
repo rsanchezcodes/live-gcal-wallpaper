@@ -16,6 +16,16 @@ ARCHIVOS_WEB = {
 }
 
 
+def semana_pedida(ruta_completa):
+    """Lee ?semana=N de la dirección. Si falta o no es un número, devuelve 0 (la semana actual)."""
+    consulta = urllib.parse.parse_qs(urllib.parse.urlsplit(ruta_completa).query)
+    try:
+        semana = int(consulta.get("semana", ["0"])[0])
+    except ValueError:
+        return 0
+    return max(-config.SEMANAS_ATRAS, min(config.SEMANAS_ADELANTE, semana))
+
+
 def ruta_fondo(cfg):
     """Imagen detrás del calendario: la elegida en config.json o tu fondo de Windows original."""
     if cfg.get("imagen_fondo"):
@@ -25,7 +35,7 @@ def ruta_fondo(cfg):
 
 
 def crear(cfg, construir_vista=None):
-    construir_vista = construir_vista or (lambda: vista.construir(cfg))
+    construir_vista = construir_vista or (lambda semana=0: vista.construir(cfg, semana=semana))
     estado = sincronizacion.ESTADO
     # Identifica este arranque: si la app se reinicia (nueva configuración, nueva versión),
     # la página lo nota y se recarga entera para recoger el fondo, el estilo y el código nuevos.
@@ -56,7 +66,9 @@ def crear(cfg, construir_vista=None):
             if ruta == "/api/ping":
                 return self.enviar(204)
             if ruta == "/api/vista":
-                cuerpo = json.dumps({**construir_vista(), "arranque": arranque}, ensure_ascii=False).encode()
+                semana = semana_pedida(self.path)
+                cuerpo = json.dumps({**construir_vista(semana), "arranque": arranque, "semana": semana,
+                                     "limites": [-config.SEMANAS_ATRAS, config.SEMANAS_ADELANTE]}, ensure_ascii=False).encode()
                 return self.enviar(200, cuerpo, "application/json; charset=utf-8")
             if ruta == "/api/cambios":
                 return self.avisar_cambios()

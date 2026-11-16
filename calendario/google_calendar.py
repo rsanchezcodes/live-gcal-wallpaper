@@ -180,8 +180,8 @@ class Sincronizador:
     """Pregunta a Google si ha cambiado algo (petición mínima con syncToken) y solo entonces
     descarga los eventos de la semana actual y los próximos días."""
 
-    def __init__(self, servicio, tz, dias=60):
-        self.s, self.tz, self.dias = servicio, tz, dias
+    def __init__(self, servicio, tz):
+        self.s, self.tz = servicio, tz
         self.tokens, self.calendarios = {}, []
         self.t_lista = self.t_ventana = 0.0
         self.dia = None
@@ -226,9 +226,11 @@ class Sincronizador:
             return False
 
     def _ventana(self, hoy):
-        lunes = hoy - timedelta(days=hoy.weekday())
-        desde = datetime.combine(lunes, datetime.min.time(), tzinfo=self.tz)
-        hasta = desde + timedelta(days=self.dias)
+        lunes_actual = hoy - timedelta(days=hoy.weekday())
+        primer_lunes = lunes_actual - timedelta(weeks=config.SEMANAS_ATRAS)
+        desde = datetime.combine(primer_lunes, datetime.min.time(), tzinfo=self.tz)
+        hasta = datetime.combine(lunes_actual + timedelta(weeks=config.SEMANAS_ADELANTE + 1),
+                                 datetime.min.time(), tzinfo=self.tz)
         eventos = []
         for cal in self.calendarios:
             items, _ = self._todas(self.s.events().list, calendarId=cal["id"], timeMin=desde.isoformat(),

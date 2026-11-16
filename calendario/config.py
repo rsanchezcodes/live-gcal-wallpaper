@@ -8,6 +8,8 @@ WEB = RAIZ / "web"                  # la página que se muestra como fondo
 RUTA_CONFIG = RAIZ / "config.json"
 CREDENCIALES = RAIZ / "credentials.json"
 REGISTRO = RAIZ / "app.log"
+# Semanas que se pueden recorrer en el calendario (y que, por tanto, se descargan de Google).
+SEMANAS_ATRAS, SEMANAS_ADELANTE = 4, 12
 
 VERSION = 2
 POR_DEFECTO = {
