@@ -15,8 +15,6 @@ ARCHIVOS_WEB = {
     "/calendario.js": ("calendario.js", "text/javascript; charset=utf-8"),
 }
 
-SEMANAS_ATRAS, SEMANAS_ADELANTE = 4, 12  # hasta dónde se puede navegar
-
 
 def semana_pedida(ruta_completa):
     """Lee ?semana=N de la dirección. Si falta o no es un número, devuelve 0 (la semana actual)."""
@@ -25,7 +23,7 @@ def semana_pedida(ruta_completa):
         semana = int(consulta.get("semana", ["0"])[0])
     except ValueError:
         return 0
-    return max(-SEMANAS_ATRAS, min(SEMANAS_ADELANTE, semana))
+    return max(-config.SEMANAS_ATRAS, min(config.SEMANAS_ADELANTE, semana))
 
 
 def ruta_fondo(cfg):
@@ -70,7 +68,7 @@ def crear(cfg, construir_vista=None):
             if ruta == "/api/vista":
                 semana = semana_pedida(self.path)
                 cuerpo = json.dumps({**construir_vista(semana), "arranque": arranque, "semana": semana,
-                                     "limites": [-SEMANAS_ATRAS, SEMANAS_ADELANTE]}, ensure_ascii=False).encode()
+                                     "limites": [-config.SEMANAS_ATRAS, config.SEMANAS_ADELANTE]}, ensure_ascii=False).encode()
                 return self.enviar(200, cuerpo, "application/json; charset=utf-8")
             if ruta == "/api/cambios":
                 return self.avisar_cambios()

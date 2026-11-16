@@ -226,9 +226,11 @@ class Sincronizador:
             return False
 
     def _ventana(self, hoy):
-        lunes = hoy - timedelta(days=hoy.weekday())
-        desde = datetime.combine(lunes, datetime.min.time(), tzinfo=self.tz)
-        hasta = desde + timedelta(days=self.dias)
+        lunes_actual = hoy - timedelta(days=hoy.weekday())
+        primer_lunes = lunes_actual - timedelta(weeks=config.SEMANAS_ATRAS)
+        desde = datetime.combine(primer_lunes, datetime.min.time(), tzinfo=self.tz)
+        hasta = datetime.combine(lunes_actual + timedelta(weeks=config.SEMANAS_ADELANTE + 1),
+                                 datetime.min.time(), tzinfo=self.tz)
         eventos = []
         for cal in self.calendarios:
             items, _ = self._todas(self.s.events().list, calendarId=cal["id"], timeMin=desde.isoformat(),
