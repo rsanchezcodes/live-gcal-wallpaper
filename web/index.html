@@ -28,7 +28,18 @@
 
       <div id="aviso"></div>
     </aside>
-    <section id="sem"></section>
+    <section id="semana">
+      <!-- Cabecera de la semana: fechas a la izquierda y botones para moverse a la derecha -->
+      <header id="navegacion">
+        <div id="rango"></div>
+        <nav class="grupo" aria-label="Cambiar de semana">
+          <button id="anterior" title="Semana anterior" aria-label="Semana anterior">‹</button>
+          <button id="boton-hoy" title="Volver a esta semana">Hoy</button>
+          <button id="siguiente" title="Semana siguiente" aria-label="Semana siguiente">›</button>
+        </nav>
+      </header>
+      <div id="sem"></div>
+    </section>
   </main>
   <script src="/calendario.js"></script>
 </body>
