@@ -1,6 +1,7 @@
 """Servidor local (solo 127.0.0.1) que entrega la página y avisa de los cambios al instante."""
 import json
 import mimetypes
+import time
 import urllib.parse
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -26,6 +27,9 @@ def ruta_fondo(cfg):
 def crear(cfg, construir_vista=None):
     construir_vista = construir_vista or (lambda: vista.construir(cfg))
     estado = sincronizacion.ESTADO
+    # Identifica este arranque: si la app se reinicia (nueva configuración, nueva versión),
+    # la página lo nota y se recarga entera para recoger el fondo, el estilo y el código nuevos.
+    arranque = str(time.time_ns())
     puerto = cfg["puerto"]
     hosts_locales = {f"127.0.0.1:{puerto}", f"localhost:{puerto}"}
 
@@ -52,7 +56,7 @@ def crear(cfg, construir_vista=None):
             if ruta == "/api/ping":
                 return self.enviar(204)
             if ruta == "/api/vista":
-                cuerpo = json.dumps(construir_vista(), ensure_ascii=False).encode()
+                cuerpo = json.dumps({**construir_vista(), "arranque": arranque}, ensure_ascii=False).encode()
                 return self.enviar(200, cuerpo, "application/json; charset=utf-8")
             if ruta == "/api/cambios":
                 return self.avisar_cambios()

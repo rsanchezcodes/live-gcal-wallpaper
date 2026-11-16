@@ -49,6 +49,11 @@ def test_sirve_la_pagina_y_la_vista(app):
     assert peticion("/../config.json") == 404
 
 
+def test_la_vista_identifica_el_arranque(app):
+    with urllib.request.urlopen(f"http://127.0.0.1:{PUERTO}/api/vista", timeout=3) as r:
+        assert json.load(r)["arranque"].isdigit()
+
+
 def test_rechaza_otros_hosts(app):
     assert peticion("/api/vista", cabeceras={"Host": "malicioso.example.com"}) == 403
 

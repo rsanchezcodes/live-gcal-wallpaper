@@ -6,6 +6,7 @@ const CIERRE_AUTOMATICO_MS = 120000; // el detalle se cierra solo a los 2 minuto
 const COLOR_VALIDO = /^#[0-9a-f]{6}$/i;
 
 let vista = null;        // último JSON de /api/vista
+let arranque = null;     // identificador del arranque de la app que sirvió la página
 let elegido = null;      // id del evento seleccionado
 let temporizador = null;
 
@@ -283,6 +284,11 @@ document.addEventListener("keydown", (ev) => {
 
 async function pintar() {
   const v = await (await fetch("/api/vista", { cache: "no-store" })).json();
+  if (arranque && v.arranque !== arranque) {
+    location.reload(); // la app se ha reiniciado: recarga fondo, estilos y código
+    return;
+  }
+  arranque = v.arranque;
   vista = v;
   $("dia").textContent = v.hoy.dia;
   $("num").textContent = v.hoy.numero;
